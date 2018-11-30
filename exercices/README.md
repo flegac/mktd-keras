@@ -8,7 +8,7 @@ The process of machine learning can be decompose in 7 steps :
 2. Model definition
 3. Model training
 4. Model evaluation
-5. Hyperparameter tuning  
+5. Hyperparameter tuning
 6. Prediction
 
 ## 1 - Data Preparation
