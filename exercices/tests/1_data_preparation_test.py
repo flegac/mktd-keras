@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
 
 
 # - 1.1 pandas : Load a dataset from CSV file using pandas library
@@ -34,10 +35,22 @@ def test_reshape_array():
 
 
 def compute_std_dev_and_mean():
-    data = np.array([[1, 3, 5, 2, 1, 1, 4, 3, 7, 9, 12, 3, 2, 1, 3],
-                     [1, 3, 5, 2, 1, 1, 4, 3, 7, 9, 12, 3, 2, 1, 3]],
+    data = np.array([[1, 2, 3, 4, 5, 6],
+                     [4, 5, 6, 7, 8, 9]],
                     dtype=np.float)
-    data_scaled = preprocessing.scale(data)
+    data_mean = data.mean(axis=1)
+    data_std = data.std(axis=1)
+    data_scaled = preprocessing.scale(data, axis=1)
 
-    data_scaled.mean()
-    data_scaled.std()
+    scaled_mean = data_scaled.mean(axis=1)
+    scaled_std = data_scaled.std(axis=1)
+
+    print('data : {} {}'.format(data_mean, data_std))
+    print('scaled : {} {}'.format(scaled_mean, scaled_std))
+
+
+def extract_validation_data():
+    X = np.array(range(500)).reshape((100, 5))
+    Y = np.array(range(100))
+    x_train, x_val, y_train, y_val = train_test_split(X, Y, test_size=0.10, random_state=None)
+    print('{.shape} {.shape} {.shape} {.shape}'.format(x_train,y_train,x_val,y_val))
