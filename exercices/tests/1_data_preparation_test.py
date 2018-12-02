@@ -12,8 +12,8 @@ import numpy as np
 
 def test_pandas_load_csv():
     # load csv file
-    data = None
-    expected = [10, 28, 28]
+    data = pd.read_csv('../resources/dataset.csv')
+    expected = (4, 3)
 
     assert data.shape == expected
 
