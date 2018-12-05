@@ -9,5 +9,5 @@ setup(
     license='',
     author='florent',
     author_email='',
-    description='', install_requires=['numpy', 'pandas']
+    description='', install_requires=['keras', 'numpy', 'pandas']
 )
