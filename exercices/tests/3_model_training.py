@@ -6,11 +6,24 @@
 # 3.6 model.fit()
 # 3.7 ImageDataGenerator : data
 # 3.8 model.fit_generator()
+from keras import Sequential
+from keras.layers import Dense
+
+from exercices import utils
+
+
+def create_sequential_model():
+    model = Sequential()
+    model.add(Dense(12, input_dim=8, kernel_initializer='uniform', activation='relu'))
+    model.add(Dense(8, kernel_initializer='uniform', activation='relu'))
+    model.add(Dense(1, kernel_initializer='uniform', activation='sigmoid'))
+    return model
 
 
 def model_training():
-    model = None
-    X, Y = None, None
+    model = create_sequential_model()
+
+    (x_train, y_train), (x_test, y_test) = utils.get_mnist()
 
     # Compile model
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -19,3 +32,6 @@ def model_training():
     # evaluate the model
     scores = model.evaluate(X, Y, verbose=0)
     print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+
+
+

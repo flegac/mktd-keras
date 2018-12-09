@@ -53,4 +53,4 @@ def extract_validation_data():
     X = np.array(range(500)).reshape((100, 5))
     Y = np.array(range(100))
     x_train, x_val, y_train, y_val = train_test_split(X, Y, test_size=0.10, random_state=None)
-    print('{.shape} {.shape} {.shape} {.shape}'.format(x_train,y_train,x_val,y_val))
+    print('{.shape} {.shape} {.shape} {.shape}'.format(x_train, y_train, x_val, y_val))

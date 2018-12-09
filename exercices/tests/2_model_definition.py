@@ -42,11 +42,15 @@ def print_model_summary(model):
     model.summary()
 
 
-path = '.'
-print(os.path.curdir)
-model = create_sequential_model()
-save_model(model, path)
-print_model_summary(model)
+def test():
+    path = '.'
+    print(os.path.curdir)
+    model = create_sequential_model()
+    save_model(model, path)
+    print_model_summary(model)
 
-model2 = load_model(path)
-print_model_summary(model2)
+    model2 = load_model(path)
+    print_model_summary(model2)
+
+
+test()
