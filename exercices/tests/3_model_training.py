@@ -15,19 +15,13 @@ from exercices import utils
 
 def create_sequential_model(input_shape=(28, 28, 1), output=10):
     model = Sequential([
-        Conv2D(32, kernel_size=(3, 3), padding='same', activation='relu', input_shape=input_shape),
-        Conv2D(32, kernel_size=(3, 3), padding='same', activation='relu'),
-        MaxPooling2D(),
-        BatchNormalization(),
-
-        Conv2D(64, kernel_size=(3, 3), padding='same', activation='relu'),
-        Conv2D(64, kernel_size=(3, 3), padding='same', activation='relu'),
+        Conv2D(8, kernel_size=(3, 3), padding='same', activation='relu', input_shape=input_shape),
         MaxPooling2D(),
         BatchNormalization(),
 
         Flatten(),
         BatchNormalization(),
-        Dense(units=64, activation='relu'),
+        Dense(units=8, activation='relu'),
         Dense(units=output, activation='softmax')
     ])
     return model
@@ -45,10 +39,10 @@ def model_training():
     # Compile model
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     # Fit the model
-    model.fit(x_train, y_train, epochs=20, batch_size=32, verbose=1)
+    model.fit(x_train, y_train, epochs=1, batch_size=32, verbose=1)
     # evaluate the model
     scores = model.evaluate(x_test, y_test, verbose=0)
-    print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+    print("{}: {}" .format(model.metrics_names[1], scores[1] * 100))
 
 
 model_training()
