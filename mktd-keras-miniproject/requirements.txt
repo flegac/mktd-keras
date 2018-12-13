@@ -1,2 +1,5 @@
+werkzeug
+opencv-python
+requests
+flask
 mktd-keras-exercices
-

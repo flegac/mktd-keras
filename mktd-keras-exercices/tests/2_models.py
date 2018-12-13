@@ -1,49 +1,43 @@
-# 3.1 Metrics : evaluate model
-# 3.2 Loss function (mean square error, cross entropy)
-# 3.3 Optimizer function (stochastic gradient descent)
-# 3.4 Batch size, epoch number
-# 3.5 model.compile(training_parameters)
-# 3.6 model.fit()
-# 3.7 ImageDataGenerator : data
-# 3.8 model.fit_generator()
-from keras import Sequential
-from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, BatchNormalization, Reshape
 from keras.utils import to_categorical
 
-from exercices import dataset
 from exercices.dataset import Datasets
+from exercices.models import Models
 
 
-def create_sequential_model(input_shape=(28, 28, 1), output=10):
-    model = Sequential([
-        Conv2D(8, kernel_size=(3, 3), padding='same', activation='relu', input_shape=input_shape),
-        MaxPooling2D(),
-        BatchNormalization(),
+def test_model_training():
+    # TODO : Model is create here. Modify the Model to improve performances ! (failed tests will give you some advices)
+    # https://keras.io/layers/about-keras-layers/
+    model = Models.create_model(input_shape=(28, 28, 1), num_classes=10)
+    dataset_provider = Datasets.mnist
 
-        Flatten(),
-        BatchNormalization(),
-        Dense(units=8, activation='relu'),
-        Dense(units=output, activation='softmax')
-    ])
-    return model
+    Models.train(model, dataset_provider)
 
-
-def model_training():
-    model = create_sequential_model()
-
-    (x_train, y_train), (x_test, y_test) = Datasets.mnist()
-    x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
+    # evaluate the model
+    (_, _), (x_test, y_test) = dataset_provider()
     x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
-    y_train = to_categorical(y_train)
     y_test = to_categorical(y_test)
 
-    # Compile model
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-    # Fit the model
-    model.fit(x_train, y_train, epochs=1, batch_size=32, verbose=1)
-    # evaluate the model
     scores = model.evaluate(x_test, y_test, verbose=0)
-    print("{}: {}" .format(model.metrics_names[1], scores[1] * 100))
+    accuracy_percentage = scores[1] * 100
+    print("evaluation on unseen dataset : {} = {}".format(model.metrics_names[1], accuracy_percentage))
+
+    # TODO : add batch normalization to Models.create_model() and see real improvements
+    # https://keras.io/layers/normalization/
+    assert accuracy_percentage >= 70, "Bad accuracy ({}%) : {}".format(
+        accuracy_percentage,
+        "add a batch normalization layer to your model !")
+
+    # TODO : add convolutional layers to to Models.create_model() and boost the efficiency of the model
+    # https://keras.io/layers/convolutional/
+    assert accuracy_percentage >= 90, "Bad accuracy : ({}%) : {}".format(
+        accuracy_percentage,
+        "use a Convolutional layer !")
+
+    # TODO : try to get the best score, learn from state of the art networks !
+    # https://keras.io/applications/
+    assert accuracy_percentage >= 90, "Bad accuracy : ({}%) : {}".format(
+        accuracy_percentage,
+        "Loonk at states of the art networks : https://keras.io/applications/")
 
 
-model_training()
+test_model_training()

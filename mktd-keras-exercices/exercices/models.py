@@ -1,5 +1,6 @@
 import os
 
+import keras
 from keras.layers import *
 from keras.models import Sequential
 from keras.models import model_from_json
@@ -10,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from exercices.dataset import Datasets
 
 
-class Model:
+class Models:
     """
     A Model, in Machine Learning, is basically a function f: Tensor -> Tensor.
     The interesting fact about Models is that they can be trained to approximate another function.
@@ -65,14 +66,14 @@ class Model:
     def create_model(input_shape, num_classes):
         model = Sequential([
             Lambda(lambda x: x, input_shape=input_shape),
-            Conv2D(filters=8, kernel_size=(3, 3)),
-            BatchNormalization(),
-            Activation(activation="relu"),
-
-            MaxPooling2D(),
-            BatchNormalization(),
+            #  TODO : use Convolutional Neural Network (Conv2D) to boost the training
+            # Conv2D(filters=8, kernel_size=(3, 3)),
+            # Activation(activation="relu"),
+            # BatchNormalization(),
 
             Flatten(),
+            # TODO : use batch normalization to allow the model to train on the dataset
+            # BatchNormalization(),
             Dense(units=8, activation='relu'),
             Dense(units=num_classes, activation='softmax')
         ])
@@ -84,17 +85,12 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
-        (x_train, y_train), (x_test, y_test) = dataset_provider()
-
-        x_train = x_train.reshape(x_train.shape[0], 28, 28)
-        x_test = x_test.reshape(x_test.shape[0], 28, 28)
+        (x_train, y_train), (_, _) = dataset_provider()
 
         x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
-        x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
         y_train = to_categorical(y_train)
-        y_test = to_categorical(y_test)
 
-        x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.10)
+        (x_train, y_train), (x_test, y_test) = Datasets.split_dataset(x_train, y_train, test_size=0.10)
 
         gen = ImageDataGenerator(rotation_range=8,
                                  width_shift_range=0.08,
@@ -103,7 +99,7 @@ class Model:
                                  zoom_range=0.08)
 
         batches = gen.flow(x_train, y_train, batch_size=32)
-        val_batches = gen.flow(x_val, y_val, batch_size=32)
+        val_batches = gen.flow(x_test, y_test, batch_size=32)
 
         history = model.fit_generator(generator=batches,
                                       steps_per_epoch=int(batches.n / batches.batch_size),
@@ -111,6 +107,4 @@ class Model:
                                       validation_data=val_batches,
                                       validation_steps=int(val_batches.n / batches.batch_size)
                                       )
-
-
-Model.train(Model.create_model(input_shape=(28, 28, 1), num_classes=10), Datasets.mnist)
+        return history
