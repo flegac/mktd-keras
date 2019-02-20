@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request
 from werkzeug.utils import secure_filename
 
@@ -12,12 +14,14 @@ def hello():
     file = request.files['input']
 
     filename = '/tmp/uploads/' + secure_filename(file.filename)
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
 
+    print('save file at : {}'.format(filename))
     file.save(filename)
-
     im = cv2.imread(filename)
     print(type(im))
 
     return str(im.shape)
+
 
 app.run()

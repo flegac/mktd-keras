@@ -1,0 +1,8 @@
+
+with open(params_ws.path_to('augmentation_params.json'), 'w') as _:
+    _.write(str(self.augmentation_params.params))
+with open(params_ws.path_to('model_summary.txt'), 'w') as _:
+    self.model.summary(print_fn=lambda x: _.write(str(x) + '\n'))
+# save model config
+with open(models_ws.path_to('model_config.json'), 'w') as _:
+    json.dump(self.model.get_config(), _, indent=2, sort_keys=True)
