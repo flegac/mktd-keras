@@ -8,11 +8,11 @@
 ## Environnement Conda
 https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#
 
-- Créer un environement à partir de keras_env.yml:
+- Créer un environnement à partir de keras_env.yml:
 ```bash
 conda env create -f keras_env.yml
 ```
-- Activez votre environement :
+- Activez votre environnement :
 ```bash
 conda activate keras_env
 ```
