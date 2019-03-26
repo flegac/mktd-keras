@@ -1,7 +1,7 @@
 # Exercices
 
-With each exercice will teach you one aspect of deep learning.
-The process of machine learning can be decompose in 7 steps :
+Each set of exercices will teach you one aspect of deep learning.
+A project of machine learning can be decomposed in 7 steps :
 
 0. Data acquisition
 1. Data preparation
@@ -10,6 +10,11 @@ The process of machine learning can be decompose in 7 steps :
 4. Model evaluation
 5. Hyperparameter tuning
 6. Prediction
+
+
+Fix each unit test in the [test directory](./tests).
+- Important : take time to READ the comments in the [exercice directory](./exercices) !
+
 
 ## 1 - Data Preparation
 

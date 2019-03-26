@@ -13,7 +13,7 @@ from exercices.dataset import Datasets
 
 class Models:
     """
-    A Model, in Machine Learning, is basically a function f: Tensor -> Tensor.
+    A Model, in Machine Learning, is a function f: Tensor -> Tensor.
     The interesting fact about Models is that they can be trained to approximate another function.
 
     Most ML problems can be expressed as "How to approximate a function over Tensors".
@@ -60,20 +60,21 @@ class Models:
             json_file.write(model_json)
         # serialize weights to HDF5
         model.save_weights(os.path.join(path, 'model.h5'))
-        print("Saved model to disk")
+        print("Model saved to disk")
 
     @staticmethod
     def create_model(input_shape, num_classes):
         model = Sequential([
             Lambda(lambda x: x, input_shape=input_shape),
             #  TODO : use Convolutional Neural Network (Conv2D) to boost the training
-            # Conv2D(filters=8, kernel_size=(3, 3)),
-            # Activation(activation="relu"),
-            # BatchNormalization(),
+            # https://keras.io/layers/convolutional/
+            # Conv2D(filters=8, kernel_size=(3, 3), activation="relu"),
 
             Flatten(),
             # TODO : use batch normalization to allow the model to train on the dataset
+            # https://keras.io/layers/normalization/
             # BatchNormalization(),
+
             Dense(units=8, activation='relu'),
             Dense(units=num_classes, activation='softmax')
         ])
@@ -103,8 +104,8 @@ class Models:
 
         history = model.fit_generator(generator=batches,
                                       steps_per_epoch=int(batches.n / batches.batch_size),
-                                      epochs=3,
+                                      epochs=10,
                                       validation_data=val_batches,
-                                      validation_steps=int(val_batches.n / batches.batch_size)
+                                      validation_steps=int(val_batches.n / val_batches.batch_size)
                                       )
         return history

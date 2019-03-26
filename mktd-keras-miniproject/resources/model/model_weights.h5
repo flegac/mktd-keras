@@ -1,2 +1,0 @@
-replace with your trained model weights!
---> model.save_weights('path')

@@ -5,11 +5,13 @@ from werkzeug.utils import secure_filename
 
 import cv2
 
+from project.predict.predict_lib import init_model
+
 app = Flask(__name__)
 
 
 @app.route("/process", methods=['POST'])
-def hello():
+def predict():
     print("processing !")
     file = request.files['input']
 
@@ -21,7 +23,13 @@ def hello():
     im = cv2.imread(filename)
     print(type(im))
 
-    return str(im.shape)
+    print('load model')
+    model = init_model('../resources/model')
+
+    print('predict with model ...')
+    result = predict(model, im)
+
+    return str(result)
 
 
 app.run()

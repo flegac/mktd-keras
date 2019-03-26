@@ -1,4 +1,5 @@
-from keras.datasets import mnist
+import pandas
+from keras.datasets import mnist, fashion_mnist
 from sklearn import preprocessing
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -23,9 +24,10 @@ class Tensors:
     @staticmethod
     def reshape(array: np.ndarray, shape: tuple):
         # TODO : use numpy reshape function
-        # return array.reshape(shape)
+        # https://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html
 
-        raise NotImplementedError()
+        return array.reshape(shape)
+        # raise NotImplementedError()
 
 
 class Datasets:
@@ -50,26 +52,29 @@ class Datasets:
 
     @staticmethod
     def fashion_mnist():
-        #  TODO : get the fashion MNIST dataset from keras
+        # TODO : get the fashion MNIST dataset from keras
         # https://keras.io/datasets/
+        return fashion_mnist.load_data()
 
-        raise NotImplementedError()
+        # raise NotImplementedError()
 
     @staticmethod
     def from_csv(path: str):
         # TODO : use pandas to read a csv file
         # https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html
 
-        raise NotImplementedError()
+        return pandas.read_csv(path)
+        # raise NotImplementedError()
 
     @staticmethod
     def split_dataset(x: np.ndarray, y: np.ndarray, test_size=0.1):
         assert x.shape[0] == y.shape[0]
         # TODO : use sklearn.train_test_split to split a dataset in two datasets (training and validation)
-        # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=None)
-        # return (x_train, y_train), (x_test, y_test)
+        # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
 
-        raise NotImplementedError()
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=None)
+        return (x_train, y_train), (x_test, y_test)
+        # raise NotImplementedError()
 
 
 class DataPreparation:
@@ -93,5 +98,6 @@ class DataPreparation:
     def normalize(array: np.ndarray):
         # TODO : rescale numpy array to feat normal distribution
         # https://scikit-learn.org/stable/modules/preprocessing.html#preprocessing
-        # return preprocessing.scale(array, axis=1)
-        raise NotImplementedError()
+
+        return preprocessing.scale(array, axis=1)
+        # raise NotImplementedError()

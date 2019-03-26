@@ -1,25 +1,15 @@
-# Ideas for project :
+# Project Keras
 
-- fashion mnist
-- NLP
-- some simple reinforcement learning
-
-
+Train a model to recognize monkeys !
+- https://www.kaggle.com/slothkong/10-monkey-species
 
 ## Objectif :
 
-1. Train a Model on fashion MNIST.
-2. Create a function to transform any image into a format compatible with the model.
-3. Package the Model into a web service to make predictions on image sent by url.
-4. Search the web for images using keywords as 'shirts', 'pants' or 'dress'.
-5. Use your web service against such images and check for mistakes.
-6. Try to improve your Model using newly acquired images to retrain it.
-7. Get the best score over the final validation dataset !
-
+0. Visualize / inspect your dataset
+1. Create a basic Model & train it against the dataset
+2. Package the Model into a web service to make predictions
+3. Improve your model !
 
 ## Notes:
-
-All the work above should be done in team.
-You can use multiple Models and combine their results to improve your score.
-Anything is allowed !
-Good luck ...
+Multiple models can be trained by different member of the team.
+The prediction web service can improve its performances just by averaging the predictions of multiples models.
