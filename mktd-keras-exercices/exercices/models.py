@@ -83,4 +83,5 @@ class Models:
 
     @staticmethod
     def predict(model, x: np.ndarray):
+        x = x.astype(np.float32)
         return model.predict(x.reshape(1, *x.shape))
