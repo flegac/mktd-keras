@@ -1,5 +1,8 @@
+import cv2
+
 import pandas
 from keras.datasets import mnist, fashion_mnist
+from keras.utils import to_categorical
 from sklearn import preprocessing
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -20,6 +23,10 @@ class Tensors:
     @staticmethod
     def create(array):
         return np.array(array)
+
+    @staticmethod
+    def from_image(path: str):
+        return cv2.imread(path)
 
     @staticmethod
     def reshape(array: np.ndarray, shape: tuple):
@@ -48,11 +55,28 @@ class Datasets:
 
     @staticmethod
     def mnist():
-        return mnist.load_data()
+        # if keras can not download mnist ...
+        # copy: https://s3.amazonaws.com/img-datasets/mnist.npz
+        # to: ~/.keras/datasets/
+
+        train, test = mnist.load_data()
+        # concatenate train & test
+        x = np.stack([*train[0], *test[0]])
+        y = np.stack([*train[1], *test[1]])
+
+        # reshape
+        x = x.reshape(x.shape[0], 28, 28, 1)
+        y = to_categorical(y)
+
+        def dataset_generator():
+            for i in range(x.shape[0]):
+                yield x[i], y[i]
+
+        return dataset_generator
 
     @staticmethod
     def fashion_mnist():
-        # TODO : get the fashion MNIST dataset from keras
+        # TODO : get the fashion MNIST dataset from keras and create a generator from it
         # https://keras.io/datasets/
         return fashion_mnist.load_data()
 

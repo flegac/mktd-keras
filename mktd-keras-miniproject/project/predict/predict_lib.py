@@ -5,6 +5,8 @@ import numpy as np
 from keras import Model
 from keras.engine.network import Network
 
+from exercices.models import Models
+
 
 def init_model(path: str) -> Network:
     with open(os.path.join(path, 'model.json')) as _:
@@ -15,5 +17,4 @@ def init_model(path: str) -> Network:
 
 
 def predict(model: Network, image: np.ndarray):
-    # TODO use the model to make predictions
-    return [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+    return Models.predict(model, image)

@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 
 import cv2
 
+from exercices.models import Models
 from project.predict.predict_lib import init_model
 
 app = Flask(__name__)

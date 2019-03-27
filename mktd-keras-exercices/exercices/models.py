@@ -1,14 +1,8 @@
 import os
+from typing import Tuple
 
-import keras
 from keras.layers import *
-from keras.models import Sequential
-from keras.models import model_from_json
-from keras.preprocessing.image import ImageDataGenerator
-from keras.utils import to_categorical
-from sklearn.model_selection import train_test_split
-
-from exercices.dataset import Datasets
+from keras.models import Sequential, load_model
 
 
 class Models:
@@ -42,28 +36,20 @@ class Models:
         model.summary()
 
     @staticmethod
-    def load_model(path):
-        # load json and create model
-        json_file = open(os.path.join(path, 'model.json'), 'r')
-        loaded_model_json = json_file.read()
-        json_file.close()
-        loaded_model = model_from_json(loaded_model_json)
-        # load weights into new model
-        loaded_model.load_weights(os.path.join(path, 'model.h5'))
+    def load_model(path: str):
+        filename = os.path.join(path, 'model.h5')
+        loaded_model = load_model(filename)
         return loaded_model
 
     @staticmethod
-    def save_model(model, path):
-        # serialize model to JSON
-        model_json = model.to_json()
-        with open(os.path.join(path, 'model.json'), "w") as json_file:
-            json_file.write(model_json)
-        # serialize weights to HDF5
-        model.save_weights(os.path.join(path, 'model.h5'))
-        print("Model saved to disk")
+    def save_model(model, path: str):
+        os.makedirs(path, exist_ok=True)
+        filename = os.path.join(path, 'model.h5')
+        model.save(filename)
+        print("Model saved to disk : {}".format(filename))
 
     @staticmethod
-    def create_model(input_shape, num_classes):
+    def create(input_shape: Tuple[int, int, int], num_classes: int):
         model = Sequential([
             Lambda(lambda x: x, input_shape=input_shape),
             #  TODO : use Convolutional Neural Network (Conv2D) to boost the training
@@ -73,7 +59,7 @@ class Models:
             Flatten(),
             # TODO : use batch normalization to allow the model to train on the dataset
             # https://keras.io/layers/normalization/
-            # BatchNormalization(),
+            BatchNormalization(),
 
             Dense(units=8, activation='relu'),
             Dense(units=num_classes, activation='softmax')
@@ -81,31 +67,20 @@ class Models:
         return model
 
     @staticmethod
-    def train(model, dataset_provider):
+    def train(model, train, validation):
         model.compile(loss='categorical_crossentropy',
                       optimizer='adam',
                       metrics=['accuracy'])
 
-        (x_train, y_train), (_, _) = dataset_provider()
-
-        x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
-        y_train = to_categorical(y_train)
-
-        (x_train, y_train), (x_test, y_test) = Datasets.split_dataset(x_train, y_train, test_size=0.10)
-
-        gen = ImageDataGenerator(rotation_range=8,
-                                 width_shift_range=0.08,
-                                 shear_range=0.3,
-                                 height_shift_range=0.08,
-                                 zoom_range=0.08)
-
-        batches = gen.flow(x_train, y_train, batch_size=32)
-        val_batches = gen.flow(x_test, y_test, batch_size=32)
-
-        history = model.fit_generator(generator=batches,
-                                      steps_per_epoch=int(batches.n / batches.batch_size),
-                                      epochs=10,
-                                      validation_data=val_batches,
-                                      validation_steps=int(val_batches.n / val_batches.batch_size)
-                                      )
+        history = model.fit_generator(
+            generator=train,
+            steps_per_epoch=int(train.n / train.batch_size),
+            epochs=2,
+            validation_data=validation,
+            validation_steps=int(validation.n / validation.batch_size)
+        )
         return history
+
+    @staticmethod
+    def predict(model, x: np.ndarray):
+        return model.predict(x.reshape(1, *x.shape))

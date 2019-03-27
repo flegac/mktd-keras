@@ -13,3 +13,8 @@ Train a model to recognize monkeys !
 ## Notes:
 Multiple models can be trained by different member of the team.
 The prediction web service can improve its performances just by averaging the predictions of multiples models.
+
+
+## Instructions
+
+0. Create a [script](project/visualize_script.py) to visualize 5 images for each category.
