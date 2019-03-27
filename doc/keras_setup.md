@@ -8,7 +8,7 @@
 ## Environnement Conda
 https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#
 
-**Mac-OS:** utilisez "bash", les autres shells ne sont pas tous compatible avec conda.
+**Mac-OS:** utilisez "bash", les autres shells ne sont pas tous compatibles avec conda.
 
 - Créer un environnement à partir de keras_env.yml:
 ```bash
