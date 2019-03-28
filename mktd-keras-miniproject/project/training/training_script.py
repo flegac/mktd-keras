@@ -21,7 +21,7 @@ def basic_model(input_shape, output_class_number):
 
     # TODO: adapt to your specific problem a genrec pretrained keras model
     # ---> https://keras.io/applications/
-    base_model = keras.applications.mobilenet_v2.MobileNetV2
+    # base_model = keras.applications.xxx
 
     # transfert learning :
     # add new input layers to match your problem input
@@ -29,11 +29,7 @@ def basic_model(input_shape, output_class_number):
     x = base_model(include_top=False, input_shape=input_shape)(inputs)
 
     # add new output layers to match your problem output
-    out1 = GlobalMaxPooling2D()(x)
-    out2 = GlobalAveragePooling2D()(x)
-    out3 = Flatten()(x)
-    out = Concatenate(axis=-1)([out1, out2, out3])
-    out = Dropout(0.5)(out)
+    out = Flatten()(x)
     out = Dense(output_class_number, activation="softmax", name="output_full_3")(out)
 
     model = Model(inputs, out)

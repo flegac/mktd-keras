@@ -4,7 +4,7 @@ import requests
 
 from exercices.dataset import Tensors
 from exercices.visualize import show_image
-from project.training.training_script import dataset_path, train_path, test_path
+# from project.training.training_script import dataset_path, train_path, test_path
 
 
 def test_prediction():
