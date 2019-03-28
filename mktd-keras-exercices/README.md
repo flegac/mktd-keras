@@ -15,6 +15,10 @@ A project of machine learning can be decomposed in 7 steps :
 Fix each unit test in the [test directory](./tests).
 - Important : take time to READ the comments in the [exercice directory](./exercices) !
 
+Tips : 
+- Set pycharm to use pytest for testing.
+- When using pytest add '-s' option to get real time loging (usefull for the training test).
+
 
 ## 1 - Data Preparation
 
@@ -61,4 +65,3 @@ Fix each unit test in the [test directory](./tests).
 - 5.2 Pooling layer
 - 5.3 BatchNormalization, Dropout
 - 5.4 Play with training parameters
-

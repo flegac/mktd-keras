@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import cv2
 
 import pandas
@@ -8,7 +10,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 
-class Tensors:
+class Tensors(object):
     """
     A Tensor is just a multi-dimensional array of numbers.
     It has two main attributes:
@@ -21,23 +23,21 @@ class Tensors:
     """
 
     @staticmethod
-    def create(array):
+    def create(array) -> np.ndarray:
         return np.array(array)
 
     @staticmethod
-    def from_image(path: str):
+    def from_image(path: str) -> np.ndarray:
         return cv2.imread(path)
 
     @staticmethod
-    def reshape(array: np.ndarray, shape: tuple):
+    def reshape(array: np.ndarray, shape: Tuple[int, int, int]) -> np.ndarray:
         # TODO : use numpy reshape function
         # https://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html
-
-        return array.reshape(shape)
-        # raise NotImplementedError()
+        raise NotImplementedError()
 
 
-class Datasets:
+class Datasets(object):
     """
     Datasets in machine learning are collections of Samples.
     A Sample is a couple (x,y) of two Tensors.
@@ -76,19 +76,15 @@ class Datasets:
 
     @staticmethod
     def fashion_mnist():
-        # TODO : get the fashion MNIST dataset from keras and create a generator from it
+        # TODO : get the fashion MNIST dataset from keras and create a generator from it (copy mnist function above)
         # https://keras.io/datasets/
-        return fashion_mnist.load_data()
-
-        # raise NotImplementedError()
+        raise NotImplementedError()
 
     @staticmethod
     def from_csv(path: str):
         # TODO : use pandas to read a csv file
         # https://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html
-
-        return pandas.read_csv(path)
-        # raise NotImplementedError()
+        raise NotImplementedError()
 
     @staticmethod
     def split_dataset(x: np.ndarray, y: np.ndarray, test_size=0.1):
@@ -96,12 +92,12 @@ class Datasets:
         # TODO : use sklearn.train_test_split to split a dataset in two datasets (training and validation)
         # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
 
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=None)
-        return (x_train, y_train), (x_test, y_test)
-        # raise NotImplementedError()
+        # x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=None)
+        # return (x_train, y_train), (x_test, y_test)
+        raise NotImplementedError()
 
 
-class DataPreparation:
+class DataPreparation(object):
     """
     Data preparation is maybe the most time consuming operation in the process of machine learning.
     Raw data usually comes with flaws making it hard to learn from :
@@ -119,9 +115,9 @@ class DataPreparation:
     """
 
     @staticmethod
-    def normalize(array: np.ndarray):
+    def normalize(array: np.ndarray) -> np.ndarray:
         # TODO : rescale numpy array to feat normal distribution
         # https://scikit-learn.org/stable/modules/preprocessing.html#preprocessing
 
-        return preprocessing.scale(array, axis=1)
-        # raise NotImplementedError()
+        # return preprocessing.scale(array, axis=1)
+        raise NotImplementedError()

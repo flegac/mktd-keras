@@ -5,6 +5,8 @@ from exercices.dataset import Datasets
 from exercices.models import Models
 from exercices.visualize import show_confusion_matrix, show_image, show_samples
 
+model_path = '../resources/model'
+
 
 def get_image():
     generator = Datasets.mnist()()
@@ -15,7 +17,6 @@ def get_image():
 def test_predict_once():
     x = get_image()
 
-    model_path = '../resources/model'
     model = Models.load_model(model_path)
 
     yy = Models.predict(model, x)
@@ -39,7 +40,6 @@ def test_confusion_matrix():
         batch_size=1
     )
 
-    model_path = '../resources/model'
     model = Models.load_model(model_path)
     yy = model.predict_generator(
         dataset,

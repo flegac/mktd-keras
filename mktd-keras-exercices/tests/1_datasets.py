@@ -4,7 +4,6 @@ from exercices.dataset import *
 
 
 def test_dataset_loading():
-    # TODO: implements Datasets.fashion_mnist
     (x_train, y_train), (x_test, y_test) = Datasets.fashion_mnist()
 
     assert len(x_train) == len(y_train)
@@ -14,9 +13,8 @@ def test_dataset_loading():
 
 
 def test_load_csv():
-    # TODO: implements Datasets.from_csv
     data = Datasets.from_csv('../resources/dataset.csv')
-
+    print(data)
     assert data.shape == (4, 3)
 
 
@@ -25,7 +23,6 @@ def test_reshape_array():
     size = reduce(lambda x, y: x * y, expected_shape)
     before = Tensors.create(range(size))
 
-    # TODO: implements Tensors.reshape
     after = Tensors.reshape(before, expected_shape)
 
     assert after.shape == expected_shape
@@ -37,9 +34,7 @@ def test_normalization():
                      dtype=np.float)
     before = (array, array.mean(axis=1), array.std(axis=1))
 
-    # TODO: implements DataPreparation.normalize
     array_scaled = DataPreparation.normalize(array)
-
     mean = array_scaled.mean(axis=1)
     std = array_scaled.std(axis=1)
 

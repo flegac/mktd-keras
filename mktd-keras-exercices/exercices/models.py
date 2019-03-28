@@ -1,11 +1,14 @@
 import os
 from typing import Tuple
 
+from keras.callbacks import CSVLogger
 from keras.layers import *
 from keras.models import Sequential, load_model
 
+from exercices.visualize import show_history
 
-class Models:
+
+class Models(object):
     """
     A Model, in Machine Learning, is a function f: Tensor -> Tensor.
     The interesting fact about Models is that they can be trained to approximate another function.
@@ -38,7 +41,11 @@ class Models:
     @staticmethod
     def load_model(path: str):
         filename = os.path.join(path, 'model.h5')
-        loaded_model = load_model(filename)
+
+        # TODO: use keras to load the model from its path
+        # https://keras.io/getting-started/faq/#how-can-i-save-a-keras-model
+        loaded_model = ('do', 'something', 'with', filename)
+
         return loaded_model
 
     @staticmethod
@@ -52,36 +59,54 @@ class Models:
     def create(input_shape: Tuple[int, int, int], num_classes: int):
         model = Sequential([
             Lambda(lambda x: x, input_shape=input_shape),
-            #  TODO : use Convolutional Neural Network (Conv2D) to boost the training
-            # https://keras.io/layers/convolutional/
-            # Conv2D(filters=8, kernel_size=(3, 3), activation="relu"),
+            #  TODO: use Convolutional Neural Network (Conv2D) to boost the training
+            # ---> https://keras.io/layers/convolutional/
+
+            # Conv2D(filters=8, kernel_size=(3, 3), padding='same'),
+            # Activation(activation='relu'),
+            # BatchNormalization(),
 
             Flatten(),
-            # TODO : use batch normalization to allow the model to train on the dataset
-            # https://keras.io/layers/normalization/
-            BatchNormalization(),
 
-            Dense(units=8, activation='relu'),
+            Dense(units=8),
+            Activation(activation='relu'),
+
+            # TODO: use batch normalization here, just before the final layer
+            # ---> https://keras.io/layers/normalization/
+
+            # BatchNormalization(),
+
             Dense(units=num_classes, activation='softmax')
         ])
         return model
 
     @staticmethod
-    def train(model, train, validation):
+    def train(model, train, validation) -> None:
         model.compile(loss='categorical_crossentropy',
-                      optimizer='adam',
+                      optimizer='SGD',
                       metrics=['accuracy'])
 
         history = model.fit_generator(
             generator=train,
             steps_per_epoch=int(train.n / train.batch_size),
-            epochs=2,
+            epochs=10,
             validation_data=validation,
-            validation_steps=int(validation.n / validation.batch_size)
+            validation_steps=int(validation.n / validation.batch_size),
+            callbacks=[
+                CSVLogger('training_logs.csv', append=False),
+            ]
         )
+        show_history(history.history)
+
         return history
 
     @staticmethod
-    def predict(model, x: np.ndarray):
+    def predict(model, x: np.ndarray) -> np.ndarray:
         x = x.astype(np.float32)
-        return model.predict(x.reshape(1, *x.shape))
+        # batch size = 1
+        x = x.reshape(1, *x.shape)
+
+        # TODO: use model.predict(x) to predict on x
+        # --> https://keras.io/models/model/#predict
+
+        raise NotImplementedError()
