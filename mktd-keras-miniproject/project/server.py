@@ -1,13 +1,18 @@
 import os
+
+import keras
 import scipy
 from flask import Flask, request
+from keras.preprocessing.image import ImageDataGenerator
 from werkzeug.utils import secure_filename
 import tensorflow as tf
 
 import cv2
 import numpy as np
 
+from exercices.dataset import Tensors
 from exercices.models import Models
+from exercices.visualize import show_image
 
 app = Flask(__name__)
 
@@ -17,6 +22,7 @@ global graph
 graph = tf.get_default_graph()
 print('preload model ...')
 model = Models.load_model('../resources/model')
+assert isinstance(model, keras.models.Model)
 print('model is ready !')
 
 
@@ -31,16 +37,21 @@ def predict():
     file.save(filename)
 
     print('read image from local disk')
-    img = cv2.imread(filename)
+    img = Tensors.from_image(filename)
+
+    print('prepare image for prediction')
+    img = cv2.resize(img, dsize=(128, 128), interpolation=cv2.INTER_CUBIC)
     img = img / 255.
-    img = scipy.resize(img, (128, 128, 3))
-    print(type(img))
-    print(img.shape)
 
     print('make prediction using model ...')
     with graph.as_default():
         result = Models.predict(model, img)
     print('prediction : {}'.format(result))
+    print('---> {}'.format(np.argmax(result)))
+    try:
+        print('---> {}'.format(np.argmax(result, axis=1)))
+    except:
+        pass
 
     return str(np.argmax(result))
 

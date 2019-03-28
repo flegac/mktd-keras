@@ -5,21 +5,34 @@ from werkzeug.utils import secure_filename
 
 import cv2
 from exercices.models import Models
+from exercices.visualize import show_confusion_matrix, show_samples
+from project.training.training_script import prepare_dataset
+import numpy as np
 
-print('loading model ...')
-model = Models.load_model('../resources/model')
-print('model loaded !')
 
-print("processing !")
-filename = '../resources/images/n2140.jpg'
+def test_confusion_matrix():
+    model = Models.load_model('../resources/model')
+    input_shape = model.input_shape[1:]
+    train, test = prepare_dataset(input_shape, batch_size=1)
 
-img = cv2.imread(filename)
-img = img / 255.
-img = scipy.resize(img, (128, 128, 3))
-print(type(img))
-print(img.shape)
+    expected = []
+    predictions = []
+    errors = []
 
-print('predict with model ...')
-result = Models.predict(model, img)
+    for i in range(len(test)):
+        x, y = next(test)
+        y = np.argmax(y)
+        z = np.argmax(model.predict(x))
+        expected.append(y)
+        predictions.append(z)
+        if z != y:
+            print('expected: {} actual: {}'.format(y, z))
+            errors.append((x, z))
 
-print(result)
+    cm = show_confusion_matrix(expected, predictions)
+    print('confusion matrix :')
+    print(cm)
+
+    # display errors
+    errors = errors[:100]
+    show_samples(errors, 10, 10)
